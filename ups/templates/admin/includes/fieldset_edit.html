@@ -1,0 +1,91 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+        <link rel="stylesheet" href="ippon.css">
+        <script language="javascript" type="text/javascript">
+    var
+            edit=0;
+        $( "#target" ).click(function() {
+
+                if(edit==1){
+                    $('li #target').text('Редактировать взвешиванием');
+                    edit=0;
+                }else{
+                    $('li #target').text('Редактировать в ручную');
+                    edit=1
+                }
+            });
+    var wsUri = "ws://127.0.0.1:9999";
+    var output;
+    function init() {
+        output = $("#id_choice_text");
+        //$("#id_choice_text").val("Логин");
+        testWebSocket();
+    }
+    function testWebSocket() {
+        var websocket = new WebSocket(wsUri);
+
+
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+
+    }
+
+    function onMessage(evt) {
+        writeToScreen(
+						evt.data.substring(1,6)//'<li>Напряжение на входе:                       <span style="color: red;">' + evt.data.substring(1,6) + '</span></li>'
+						//'<li>Аварийное напряжение:                         <span style="color: red;">' + evt.data.substring(7,12) + '</span></li>'+
+						//'<li>Напряжение на выходе:                         <span style="color: red;">' + evt.data.substring(13,18) + '</span></li>'+
+						//'<li>Награзка навыходе:                   <span style="color: red;">' + evt.data.substring(19,22) + '</span></li>'+
+						//'<li>Частота напряжения на выходе: <span style="color: red;">' + evt.data.substring(23,27) + '</span></li>'+
+						//'<li>Напряжение батареи:            <span style="color: red;">' + evt.data.substring(28,32) + '</span></li>'+
+						//'<li>Температура UPS:                   <span style="color: red;">' + evt.data.substring(32,37) + '</span></li>'
+
+						);
+
+
+    function writeToScreen(message) {
+        var pre = document.createElement("p");
+        $(pre).addClass('del');
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        $('.del').remove();
+        if(edit==1){
+            output.val(message);
+        }
+    }
+    window.addEventListener("load", init, false);
+</script>
+    <div class="row">
+
+
+
+
+	</div>
+    {% for line in fieldset %}
+        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <p>{{ field.contents }}</p>
+                        {% else %}
+                            {{ field.field }}
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <p class="help">{{ field.field.help_text|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>

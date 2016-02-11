@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<meta charset="utf-8"/>
+
+<title>WebSocket Test</title>
+<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+<link rel="stylesheet" href="http://bootstrap-3.ru/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="ippon.css">
+<script language="javascript" type="text/javascript">
+    var wsUri = "ws://127.0.0.1:9999";
+    var output;
+    function init() {
+        output = document.getElementById("output");
+        testWebSocket();
+    }
+    function testWebSocket() {
+        var websocket = new WebSocket(wsUri);
+
+
+        websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+
+    }
+
+    function onMessage(evt) {
+        writeToScreen(
+						'<ul><li>Напряжение на входе:                       <span style="color: red;">' + evt.data.substring(1,6) + '</span></li>'+
+						'<li>Аварийное напряжение:                         <span style="color: red;">' + evt.data.substring(7,12) + '</span></li>'+
+						'<li>Напряжение на выходе:                         <span style="color: red;">' + evt.data.substring(13,18) + '</span></li>'+
+						'<li>Награзка навыходе:                   <span style="color: red;">' + evt.data.substring(19,22) + '</span></li>'+
+						'<li>Частота напряжения на выходе: <span style="color: red;">' + evt.data.substring(23,27) + '</span></li>'+
+						'<li>Напряжение батареи:            <span style="color: red;">' + evt.data.substring(28,32) + '</span></li>'+
+						'<li>Температура UPS:                   <span style="color: red;">' + evt.data.substring(32,37) + '</span></li>'
+
+						);
+    }
+
+
+    function writeToScreen(message) {
+        var pre = document.createElement("p");
+        $(pre).addClass('del');
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        $('.del').remove();
+
+        output.appendChild(pre);
+    }
+    window.addEventListener("load", init, false);
+</script>
+<div class="container">
+
+	<nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Project name</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+              <li><a href="../navbar-static-top/">Static top</a></li>
+              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+    <div class="row">
+		<div  class="ccol-md-10 col-sm-2 col-xs-2 col-md-offset-">
+
+				<h2>Test</h2>
+		</div>
+		<div  class="ccol-md-10 col-sm-10 col-xs-10 col-md-offset-">
+				 <!--'<li><span style="color: red;">' + evt.data.substring(37,46) + '</span></li></ul>'-->
+				<div id="output"></div>
+		</div>
+
+
+
+	</div>
+</div>
