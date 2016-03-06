@@ -5,8 +5,7 @@
     {% endif %}
         <link rel="stylesheet" href="ippon.css">
         <script language="javascript" type="text/javascript">
-    var
-            edit=0;
+    var edit=0;
         $( "#target" ).click(function() {
 
                 if(edit==1){
@@ -19,16 +18,24 @@
             });
     var wsUri = "ws://127.0.0.1:9999";
     var output;
+
     function init() {
         output = $("#id_choice_text");
         //$("#id_choice_text").val("Логин");
         testWebSocket();
+
+
     }
     function testWebSocket() {
+        if(!websocket){
+            var websocket = new WebSocket(wsUri);
+        }
         var websocket = new WebSocket(wsUri);
 
-
         websocket.onmessage = function (evt) {
+            onMessage(evt)
+        };
+        websocket.connect = function(evt) {
             onMessage(evt)
         };
 
@@ -36,17 +43,17 @@
 
     function onMessage(evt) {
         writeToScreen(
-						evt.data.substring(1,6)//'<li>Напряжение на входе:                       <span style="color: red;">' + evt.data.substring(1,6) + '</span></li>'
-						//'<li>Аварийное напряжение:                         <span style="color: red;">' + evt.data.substring(7,12) + '</span></li>'+
-						//'<li>Напряжение на выходе:                         <span style="color: red;">' + evt.data.substring(13,18) + '</span></li>'+
-						//'<li>Награзка навыходе:                   <span style="color: red;">' + evt.data.substring(19,22) + '</span></li>'+
-						//'<li>Частота напряжения на выходе: <span style="color: red;">' + evt.data.substring(23,27) + '</span></li>'+
-						//'<li>Напряжение батареи:            <span style="color: red;">' + evt.data.substring(28,32) + '</span></li>'+
-						//'<li>Температура UPS:                   <span style="color: red;">' + evt.data.substring(32,37) + '</span></li>'
+                evt.data.substring(1, 6)//'<li>Напряжение на входе:                       <span style="color: red;">' + evt.data.substring(1,6) + '</span></li>'
+                //'<li>Аварийное напряжение:                         <span style="color: red;">' + evt.data.substring(7,12) + '</span></li>'+
+                //'<li>Напряжение на выходе:                         <span style="color: red;">' + evt.data.substring(13,18) + '</span></li>'+
+                //'<li>Награзка навыходе:                   <span style="color: red;">' + evt.data.substring(19,22) + '</span></li>'+
+                //'<li>Частота напряжения на выходе: <span style="color: red;">' + evt.data.substring(23,27) + '</span></li>'+
+                //'<li>Напряжение батареи:            <span style="color: red;">' + evt.data.substring(28,32) + '</span></li>'+
+                //'<li>Температура UPS:                   <span style="color: red;">' + evt.data.substring(32,37) + '</span></li>'
 
-						);
+        );
 
-
+    }
     function writeToScreen(message) {
         var pre = document.createElement("p");
         $(pre).addClass('del');
@@ -54,10 +61,12 @@
         pre.innerHTML = message;
         $('.del').remove();
         if(edit==1){
-            output.val(message);
+
         }
+        output.val(message);
     }
-    window.addEventListener("load", init, false);
+    window.addEventListener("load", init, false)
+
 </script>
     <div class="row">
 

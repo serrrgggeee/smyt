@@ -36,7 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS =[
-    'django_admin_bootstrapped',
+    #'django_admin_bootstrapped',
     'django.contrib.admin',
     #'django.contrib.admin.apps.SimpleAdminConfig',
     'django.contrib.auth',
@@ -44,10 +44,11 @@ INSTALLED_APPS =[
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'my_test',
-    'bootstrap3',
-    'easy_pdf',
-    'ups',
+    #'my_test',
+    #'bootstrap3',
+    #'easy_pdf',
+    #'ups',
+    'smyt',
 ]
 
 MIDDLEWARE_CLASSES = [

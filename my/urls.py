@@ -17,19 +17,20 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls import *  # NOQA
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from my_test.views import TestItemDetailView
-from ups.admin import admin_site
+#from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+#from my_test.views import TestItemDetailView
+#from ups.admin import admin_site
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^test/(?P<pk>\d+)/', TestItemDetailView.as_view(), name='test-list'),
-    url(r'^ups/', include('ups.urls')),
-    url(r'^myadmin/', include(admin_site.urls)),
+    #url(r'^test/(?P<pk>\d+)/', TestItemDetailView.as_view(), name='test-list'),
+    #url(r'^ups/', include('ups.urls')),
+    url(r'^smyt/', include('smyt.urls')),
+    #url(r'^myadmin/', include(admin_site.urls)),
 ]
 
 # This is only needed when using runserver.
-if settings.DEBUG:
-    urlpatterns = patterns('',
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',  # NOQA
-            {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
-        ) + staticfiles_urlpatterns() + urlpatterns  # NOQA
+#if settings.DEBUG:
+ #   urlpatterns = patterns('',
+ #       url(r'^media/(?P<path>.*)$', 'django.views.static.serve',  # NOQA
+ #           {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+  #      )# + staticfiles_urlpatterns() + urlpatterns  # NOQA
